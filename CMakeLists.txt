@@ -1,60 +1,4 @@
-# == DO NOT EDIT THE FOLLOWING LINES for the Raspberry Pi Pico VS Code Extension to work ==
-if(WIN32)
-    set(USERHOME $ENV{USERPROFILE})
-else()
-    set(USERHOME $ENV{HOME})
-endif()
-set(sdkVersion 2.1.0)
-set(toolchainVersion 13_3_Rel1)
-set(picotoolVersion 2.1.0)
-set(picoVscode ${USERHOME}/.pico-sdk/cmake/pico-vscode.cmake)
-if (EXISTS ${picoVscode})
-    include(${picoVscode})
-endif()
-# ====================================================================================
-# == DO NOT EDIT THE FOLLOWING LINES for the Raspberry Pi Pico VS Code Extension to work ==
-if(WIN32)
-    set(USERHOME $ENV{USERPROFILE})
-else()
-    set(USERHOME $ENV{HOME})
-endif()
-set(sdkVersion 2.1.0)
-set(toolchainVersion 13_3_Rel1)
-set(picotoolVersion 2.1.0)
-set(picoVscode ${USERHOME}/.pico-sdk/cmake/pico-vscode.cmake)
-if (EXISTS ${picoVscode})
-    include(${picoVscode})
-endif()
-# ====================================================================================
-# == DO NOT EDIT THE FOLLOWING LINES for the Raspberry Pi Pico VS Code Extension to work ==
-if(WIN32)
-    set(USERHOME $ENV{USERPROFILE})
-else()
-    set(USERHOME $ENV{HOME})
-endif()
-set(sdkVersion 2.1.0)
-set(toolchainVersion 13_3_Rel1)
-set(picotoolVersion 2.1.0)
-set(picoVscode ${USERHOME}/.pico-sdk/cmake/pico-vscode.cmake)
-if (EXISTS ${picoVscode})
-    include(${picoVscode})
-endif()
-# ====================================================================================
-# == DO NOT EDIT THE FOLLOWING LINES for the Raspberry Pi Pico VS Code Extension to work ==
-if(WIN32)
-    set(USERHOME $ENV{USERPROFILE})
-else()
-    set(USERHOME $ENV{HOME})
-endif()
-set(sdkVersion 2.1.0)
-set(toolchainVersion 13_3_Rel1)
-set(picotoolVersion 2.1.0)
-set(picoVscode ${USERHOME}/.pico-sdk/cmake/pico-vscode.cmake)
-if (EXISTS ${picoVscode})
-    include(${picoVscode})
-endif()
-# ====================================================================================
-set(PICO_BOARD pico CACHE STRING "Board type")
+# Generated Cmake Pico project file
 
 cmake_minimum_required(VERSION 3.13)
 
@@ -62,40 +6,70 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# Inicializa o SDK do Raspberry Pi Pico
+# Initialise pico_sdk from installed location
+# (note this can come from environment, CMake cache etc)
+
+# == DO NOT EDIT THE FOLLOWING LINES for the Raspberry Pi Pico VS Code Extension to work ==
+if(WIN32)
+    set(USERHOME $ENV{USERPROFILE})
+else()
+    set(USERHOME $ENV{HOME})
+endif()
+set(sdkVersion 2.1.1)
+set(toolchainVersion 14_2_Rel1)
+set(picotoolVersion 2.1.1)
+set(picoVscode ${USERHOME}/.pico-sdk/cmake/pico-vscode.cmake)
+if (EXISTS ${picoVscode})
+    include(${picoVscode})
+endif()
+# ====================================================================================
+set(PICO_BOARD pico_w CACHE STRING "Board type")
+
+# Pull in Raspberry Pi Pico SDK (must be before project)
 include(pico_sdk_import.cmake)
 
-project(mensagem C CXX ASM)
+project(Testesw C CXX ASM)
 
-# Inicializa o SDK do Raspberry Pi Pico
+# Initialise the Raspberry Pi Pico SDK
 pico_sdk_init()
 
-# Adiciona o executável
-add_executable(mensagem fim.c)
+# Add executable. Default name is the project name, version 0.1
 
-pico_set_program_name(mensagem "mensagem")
-pico_set_program_version(mensagem "0.1")
+add_executable(Testesw Testesw.c
+saveSystem.c
+ )
 
-# Modifique as linhas abaixo para habilitar/desabilitar a saída via UART/USB
-pico_enable_stdio_uart(mensagem 1)
-pico_enable_stdio_usb(mensagem 1)
+add_subdirectory("C:/Users/juuze/Documents/Projeto\ Embarca/Testesw/pico-ssd1306")
 
-# Adicione o caminho para os arquivos de cabeçalho do mbedTLS
+pico_set_program_name(Testesw "Testesw")
+pico_set_program_version(Testesw "0.1")
 
-add_subdirectory("C:/Users/juuze/Documents/PROJETO\ FINAL/fim/pico-ssd1306")
-# Adicione a biblioteca padrão ao build
-target_link_libraries(mensagem
-    pico_stdlib
-    hardware_i2c
-    pico-ssd1306
-    hardware_adc
-    pico_cyw43_arch_lwip_threadsafe_background
+# Modify the below lines to enable/disable output over UART/USB
+pico_enable_stdio_uart(Testesw 0)
+pico_enable_stdio_usb(Testesw 1)
+
+# Add the standard library to the build
+target_link_libraries(Testesw
+        pico_stdlib
+        pico_cyw43_arch_lwip_threadsafe_background
+        hardware_i2c
+        hardware_adc
+        pico-ssd1306
+        hardware_flash 
+        hardware_sync
+        hardware_timer)
+
+# Add the standard include files to the build
+target_include_directories(Testesw PRIVATE
+        ${CMAKE_CURRENT_LIST_DIR}
+        ${CMAKE_CURRENT_LIST_DIR}/pico-ssd1306
+
 )
 
-# Adicione os arquivos de cabeçalho padrão ao build
-target_include_directories(mensagem PRIVATE
-    ${CMAKE_CURRENT_LIST_DIR}
-    ${CMAKE_CURRENT_LIST_DIR}/pico-ssd1306
-)
+# Add any user requested libraries
+target_link_libraries(Testesw 
+        
+        )
 
-pico_add_extra_outputs(mensagem)
+pico_add_extra_outputs(Testesw)
+
