@@ -1,7 +1,7 @@
 # PROJETO SMILE (Sistema de Monitoramento Inteligente de Energia)
 Projeto SMILE, desenvolvido para o projeto final do Embarcatech, tem como objetivo monitorar o consumo de energia e notificar o usuário acerca dos gastos.
 
-[Documentação completa](https://docs.google.com/document/d/14P5eBFIyrmmrnY1_6-GfGyncNv3MCAPiVTib1K-lYRI/edit?tab=t.0)
+[Documentação completa](https://docs.google.com/document/d/1gVZOIpe5HDg1jDSerwmRkDiQZjkOWxqEv-SfY-Xyfz4/edit?tab=t.0)
 
 ## Sumário
 - [Descrição do Funcionamento](#descrição-do-funcionamento)
