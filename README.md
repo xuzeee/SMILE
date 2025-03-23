@@ -8,9 +8,13 @@ Projeto SMILE, desenvolvido para o projeto final do Embarcatech, tem como objeti
   - [Interface](#interface)
 - [Especificação do Hardware](#especificação-do-hardware)
   - [Componentes Utilizados](#componentes)
-  - [Pinagem Utilizada](#pinagem-utilizada)
+  - [Pinagem dos Componentes](#pinagem-dos-componentes)
 - [Especificação do Firmware](#especificação-do-firmware)
+  - [Inicialização dos Periféricos](#inicialização-dos-periféricos)
+  - [Leitura e Processamento dos Dados](#leitura-e-processamento-dos-dados)
+  - [Interface de Usuário](#interface-de-usuário)
 - [Execução do Projeto](#execução-do-projeto)
+
 
 ## Descrição do funcionamento
 O SMILE é um dispositivo criado na placa BitDogLab, usando um sensor de corrente o SCT-013 que ler a corrente da rede e por meio do codigo faz as conversões em corrente e potência, para depois realizar o envio dos dados ao computador de borda e para o display. Havendo duas opções "Consumo Atual" e "Estimativa Mensal", mostrando informações variadas como previsão de gastos e consumo em tempo real.
@@ -54,19 +58,13 @@ Logo após a energização do sistema, o firmware executa a inicialização dos 
 
 - ADC: Configuração do ADC para leitura do sensor SCT-013 no pino 28.
 
+- WI-FI: Conectando a rede local e ao computador de borda.
+
 **Leitura e Processamento dos Dados**
 
 O firmware realiza leituras periódicas do sensor SCT-013 para medição da corrente elétrica. A corrente RMS é calculada com base em 500 amostras usando a equação:
 
-- Corrente RMS:
-  
-sqrt(sum / samples)
-
-sum: Soma dos quadrados das amostras de corrente ajustadas.
-
-samples: Número total de amostras coletadas.
-
-sqrt(): Função de raiz quadrada.
+com a 
 
 
 Este cálculo segue a definição de RMS (Root Mean Square), que é a raiz quadrada da média dos quadrados dos valores.
