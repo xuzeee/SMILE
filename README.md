@@ -121,7 +121,6 @@ Os menus disponíveis incluem:
 - Menu Principal: Apresenta as opções de medição.
 - Modo Sensores: Exibe a corrente, potência e consumo acumulado.
 - Modo Estimativa: Mostra a média de consumo mensal e o custo aproximado.
-- 
 ## Endpoints do Servidor
 - **`GET /update?kw=<valor>&estimate=<valor>&total=<valor>`** → Atualiza os dados de consumo no servidor.
 
