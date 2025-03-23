@@ -125,6 +125,4 @@ Os menus disponíveis incluem:
 - **`GET /update?kw=<valor>&estimate=<valor>&total=<valor>`** → Atualiza os dados de consumo no servidor.
 
 ## Melhorias Futuras
-- Implementação de uma interface web para visualização dos dados em tempo real.
-- Suporte para armazenamento em banco de dados remoto.
 - Integração com sistemas de automação residencial.
