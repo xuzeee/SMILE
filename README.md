@@ -34,7 +34,8 @@ O Push button (botão de pressão) é uma chave que, quando pressionado o botão
 |----------------------|-----------------------------------------|----------------------------------------|
 | Botão A              | GPIO 5                                  | Navegar entre os Menus                 |
 | Botão B              | GPIO 6                                  | Navegar entre os Menus                 |
-| Sensor SCT-013       | GPIO 28                                 | Indicação de estado seguro             |
+| Botão C              | GPIO 22                                 | Reset da Memória                       |
+| Sensor SCT-013       | GPIO 28                                 | Medir Corrente                         |
 | Display OLED (SDA)   | GPIO 14                                 | Comunicação I2C – Dados                |
 | Display OLED (SCL)   | GPIO 15                                 | Comunicação I2C – Clock                |
 ## Especificações do Firmware
