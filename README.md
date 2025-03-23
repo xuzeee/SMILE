@@ -7,13 +7,14 @@ Projeto SMILE, desenvolvido para o projeto final do Embarcatech, tem como objeti
 - [Descrição do Funcionamento](#descrição-do-funcionamento)
   - [Interface](#interface)
 - [Especificação do Hardware](#especificação-do-hardware)
-  - [Componentes Utilizados](#componentes)
+  - [Componentes Utilizados](#componentes-utilizados)
   - [Pinagem dos Componentes](#pinagem-dos-componentes)
 - [Especificação do Firmware](#especificação-do-firmware)
   - [Inicialização dos Periféricos](#inicialização-dos-periféricos)
   - [Leitura e Processamento dos Dados](#leitura-e-processamento-dos-dados)
   - [Interface de Usuário](#interface-de-usuário)
-- [Execução do Projeto](#execução-do-projeto)
+- [Endpoints do Servidor](#endpoints-do-servidor)
+- [Melhorias Futuras](#melhorias-futuras)
 
 
 ## Descrição do funcionamento
@@ -62,22 +63,49 @@ Logo após a energização do sistema, o firmware executa a inicialização dos 
 
 **Leitura e Processamento dos Dados**
 
-O firmware realiza leituras periódicas do sensor SCT-013 para medição da corrente elétrica. A corrente RMS é calculada com base em 500 amostras usando a equação:
+### 1. Leitura dos Dados do Sensor  
+- O firmware usa o **ADC (Conversor Analógico-Digital)** do Raspberry Pi Pico para ler os dados do sensor de corrente SCT-013.  
+- O **pino ADC 28** é utilizado para a conexão com o sensor.  
+- O ADC é configurado para operar com uma **tensão de referência de 3.3V** e uma resolução de **12 bits (0-4095)**.  
 
-com a 
+### 2. Calibração do Sensor  
+- Antes de iniciar a medição, o firmware executa uma **calibração dinâmica do offset do ADC** para minimizar ruídos e variações.  
+- A calibração remove **valores anômalos** usando um cálculo de **média e desvio padrão**.  
 
+### 3. Cálculo da Corrente RMS  
+- O firmware realiza múltiplas leituras (500 amostras por padrão).  
+- Cada leitura é convertida para tensão usando a fórmula:  
+  ```
+  V = (Leitura_ADC * V_REF) / ADC_MAX
+  ```  
+- A corrente é calculada com base na resistência de carga do circuito:  
+  ```
+  I = (V / BURDEN_RESISTOR) * CALIBRATION_FACTOR
+  ```  
+- Para obter o **valor RMS**, a soma dos quadrados das correntes medidas é dividida pelo número total de amostras e depois tiramos a raiz quadrada.  
 
-Este cálculo segue a definição de RMS (Root Mean Square), que é a raiz quadrada da média dos quadrados dos valores.
+### 4. Cálculo da Potência e Consumo de Energia  
+- A potência instantânea é calculada pela fórmula:  
+  ```
+  P = I_RMS * V_RMS
+  ```  
+- O consumo de energia acumulado é atualizado a cada ciclo:  
+  ```
+  Energia += (P * tempo_de_amostragem) / 1000
+  ```  
+- A média da potência é usada para **estimar o consumo mensal**.  
 
-- A potência instantânea é obtida por:
+### 5. Armazenamento dos Dados  
+- O consumo de energia é salvo na memória flash a cada 6 segundos para **evitar perda de dados** após reinicializações.  
+- O usuário pode **resetar o consumo acumulado** pressionando um Botão C.  
 
-potencia = corrente * VOLTAGE_RMS
-
-corrente: Corrente RMS medida.
-
-VOLTAGE_RMS: Tensão RMS da rede elétrica.
-
-potencia: Potência instantânea em watts.
+### 6. Envio dos Dados para o Servidor  
+- A cada leitura, os dados são enviados para um **servidor Flask via requisição HTTP GET**.  
+- O envio inclui:  
+  - Potência atual  
+  - Estimativa mensal de consumo  
+  - Total de energia consumida  
+- A comunicação é feita via **Wi-Fi (CYW43)**/**TCP/IP**/ e usa **IP fixo** para o servidor.  
 
 
 **Interface de Usuário**
@@ -86,10 +114,18 @@ A interface do firmware utiliza menus exibidos no display OLED e navegáveis pel
 
 - Botão A: Alterna entre os modos de medição.
 - Botão B: Exibe logs e estatísticas do consumo de energia.
+- Botão C: Reseter Mémoria.
   
 Os menus disponíveis incluem:
 
 - Menu Principal: Apresenta as opções de medição.
 - Modo Sensores: Exibe a corrente, potência e consumo acumulado.
 - Modo Estimativa: Mostra a média de consumo mensal e o custo aproximado.
+- 
+## Endpoints do Servidor
+- **`GET /update?kw=<valor>&estimate=<valor>&total=<valor>`** → Atualiza os dados de consumo no servidor.
 
+## Melhorias Futuras
+- Implementação de uma interface web para visualização dos dados em tempo real.
+- Suporte para armazenamento em banco de dados remoto.
+- Integração com sistemas de automação residencial.
